@@ -1,11 +1,12 @@
 // ==UserScript==
-// @name         2ch tree post
+// @name         2ch tree post fixed
 // @namespace    http://tampermonkey.net/
-// @version      1
+// @version      1.1
 // @description  делает треды древовидными
 // @author       You
 // @match        http://2ch.hk/*/res/*
 // @match        https://2ch.hk/*/res/*
+// @homepageURL  https://github.com/qrlk/2ch-tree-post-fixed
 // @grant        none
 // ==/UserScript==
 
