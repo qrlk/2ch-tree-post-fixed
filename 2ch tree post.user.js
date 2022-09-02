@@ -45,8 +45,11 @@
     }
 
     // ловим клик именно по конкретному поддереву
+    // определяем небольшую зону на которую нужно реагировать
     function click(e) {
-        if (e.x - e.currentTarget.offsetLeft < 5) {
+        if ((e.pageX - e.currentTarget.offsetLeft < 20) && (e.pageY - e.currentTarget.offsetTop > 20)) {
+            togglePosts(e.currentTarget)
+        } else if ((e.pageX - e.currentTarget.offsetLeft < 5) && (e.pageY - e.currentTarget.offsetTop < 20)) {
             togglePosts(e.currentTarget)
         }
     }
