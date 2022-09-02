@@ -20,7 +20,7 @@
   //функцию вызываем на все посты в треде
   //Перемащает пост и применяет стили для создания дерева
   function postMove(linkPost, newpost = false) {
-    const nodePostCurr = linkPost.parentNode.parentNode.parentNode;
+    const nodePostCurr = linkPost.parentNode.parentNode;
     const nodePostReply = document.querySelector(
       `#post-${linkPost.innerText.match(/\d+/)[0]}`
     );
@@ -28,8 +28,25 @@
     if (/OP|→/.test(linkPost.innerText) || !nodePostReply) {
       return;
     }
-    nodePostCurr.style.cssText = `border-left:2px dashed;padding-left:2px;margin-left:21px`;
-    nodePostReply.append(nodePostCurr);
+
+    // контейнер, который имитирует древовидную структуру
+    const container = document.createElement('div')
+    container.style.cssText = `border-left:2px dashed;padding-left:2px;margin-left:21px;`
+
+    // посты с одиночными картинками отображались некорректно
+    const glue = document.createElement('div')
+    glue.style.cssText = `display: flex;margin-left:2px;`
+  
+    glue.append(nodePostCurr)
+    container.append(glue)
+
+    // определяем вложенный ли пост или он в корне дерева
+    if (nodePostReply.parentNode.style.display === "flex") {
+      nodePostReply.parentNode.parentNode.insertBefore(container, nodePostReply.nextSibling)
+    } else {
+      nodePostReply.parentNode.insertBefore(container, nodePostReply.nextSibling)
+    }
+
     if (newpost) {
       nodePostCurr.style["border-left"] = "5px solid";
       nodePostCurr.addEventListener(
