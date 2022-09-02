@@ -22,11 +22,26 @@
     function togglePosts(node) {
         let sibling = node.parentNode.firstChild
         let hideBool = !node.querySelectorAll('.post')[0].classList.contains('post_type_hidden')
-        sibling.parentNode.querySelectorAll('.post').forEach(e => {
-            if (e !== sibling.firstChild) {
-                e.classList.toggle('post_type_hidden', hideBool);
+        if (node.parentNode.classList.contains("thread")) {
+            sibling = node
+            // откатываемся к первому потомку корня треда
+            while (sibling && sibling.previousSibling && !sibling.previousSibling.classList.contains("post")) {
+                sibling = sibling.previousSibling
             }
-        })
+            // обходим всё поддерево
+            while (sibling && sibling.nextSibling && sibling.tagName === "DIV") {
+                sibling.querySelectorAll('.post').forEach(e => {
+                    e.classList.toggle('post_type_hidden', hideBool)
+                })
+                sibling = sibling.nextSibling
+            }
+        } else {
+            sibling.parentNode.querySelectorAll('.post').forEach(e => {
+                if (e !== sibling.firstChild) {
+                    e.classList.toggle('post_type_hidden', hideBool);
+                }
+            })
+        }
     }
 
     // ловим клик именно по конкретному поддереву
