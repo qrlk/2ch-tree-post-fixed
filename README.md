@@ -1,5 +1,6 @@
 # 2ch-tree-post-fixed
-makes threads for famous vk public tree-like
+a usercript makes threads for famous vk public tree-like
+trees also fold on click
 
 1. установить **[tampermonkey](https://www.tampermonkey.net/)**
 2. установить **[юзерскрипт](https://github.com/qrlk/2ch-tree-post-fixed/raw/main/2ch%20tree%20post.user.js)**
