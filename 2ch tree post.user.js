@@ -10,96 +10,97 @@
 // ==/UserScript==
 
 (function () {
-  "use strict";
-  // console.time("tree script");
-  //находим все ссылки в постах
-  const post = document.querySelectorAll(
-    `.post__message > :nth-child(1)[data-num]`
-  );
-
-  // тогл состояния скрытости поста
-  function togglePosts(node) {
-    let sibling = node.parentNode.firstChild
-    let hideBool = !node.querySelectorAll('.post')[0].classList.contains('post_type_hidden')
-    sibling.parentNode.querySelectorAll('.post').forEach(e => {
-      if (e !== sibling.firstChild) {
-        e.classList.toggle('post_type_hidden', hideBool);
-      }
-    })
-  }
-
-  // ловим клик именно по конкретному поддереву
-  function click(e) {
-    if (e.x - e.currentTarget.offsetLeft < 5) {
-      togglePosts(e.currentTarget)
-    }
-  }
-
-  //функцию вызываем на все посты в треде
-  //Перемащает пост и применяет стили для создания дерева
-  function postMove(linkPost, newpost = false) {
-    const nodePostCurr = linkPost.parentNode.parentNode;
-    const nodePostReply = document.querySelector(
-      `#post-${linkPost.innerText.match(/\d+/)[0]}`
+    "use strict";
+    // console.time("tree script");
+    //находим все ссылки в постах
+    const post = document.querySelectorAll(
+        `.post__message > :nth-child(1)[data-num]`
     );
-    //если эта ссылка ведёт на оппост или другой тред или пост не существует - пропускаем
-    if (/OP|→/.test(linkPost.innerText) || !nodePostReply) {
-      return;
+
+    // тогл состояния скрытости поста
+    function togglePosts(node) {
+        let sibling = node.parentNode.firstChild
+        let hideBool = !node.querySelectorAll('.post')[0].classList.contains('post_type_hidden')
+        sibling.parentNode.querySelectorAll('.post').forEach(e => {
+            if (e !== sibling.firstChild) {
+                e.classList.toggle('post_type_hidden', hideBool);
+            }
+        })
     }
 
-    // контейнер, который имитирует древовидную структуру
-    const container = document.createElement('div')
-    container.style.cssText = `border-left:2px dashed;padding-left:2px;margin-left:21px;`
-
-    // определяем клик, что свернуть/развернуть поддерево
-    container.onclick = click
-
-    // посты с одиночными картинками отображались некорректно
-    const glue = document.createElement('div')
-    glue.style.cssText = `display: flex;margin-left:2px;`
-  
-    glue.append(nodePostCurr)
-    container.append(glue)
-
-    // определяем вложенный ли пост или он в корне дерева
-    if (nodePostReply.parentNode.style.display === "flex") {
-      nodePostReply.parentNode.parentNode.insertBefore(container, nodePostReply.nextSibling)
-    } else {
-      nodePostReply.parentNode.insertBefore(container, nodePostReply.nextSibling)
-    }
-
-    if (newpost) {
-      nodePostCurr.style["border-left"] = "5px solid";
-      nodePostCurr.addEventListener(
-        "click",
-        () => {
-          nodePostCurr.style["border-left"] = "2px dashed";
-        },
-        { once: true }
-      );
-    }
-  }
-  //перебираем и вызываем функцию
-  for (const key of post) {
-    postMove(key);
-  }
-
-  //наблюдаем за появлением новых постов
-  const fromThreads = document.querySelector(".thread");
-
-  const observer = new MutationObserver((mutationRecords) => {
-    for (const key of mutationRecords) {
-      if (key.addedNodes.length > 0) {
-        const post = key.addedNodes[0].querySelector(
-          `.post__message > :nth-child(1)[data-num]`
-        );
-        if (post) {
-          postMove(post, true);
+    // ловим клик именно по конкретному поддереву
+    function click(e) {
+        if (e.x - e.currentTarget.offsetLeft < 5) {
+            togglePosts(e.currentTarget)
         }
-      }
     }
-  });
 
-  observer.observe(fromThreads, { childList: true });
-  // console.timeEnd("tree script");
+    //функцию вызываем на все посты в треде
+    //Перемащает пост и применяет стили для создания дерева
+    function postMove(linkPost, newpost = false) {
+        const nodePostCurr = linkPost.parentNode.parentNode;
+        const nodePostReply = document.querySelector(
+            `#post-${linkPost.innerText.match(/\d+/)[0]}`
+        );
+        //если эта ссылка ведёт на оппост или другой тред или пост не существует - пропускаем
+        if (/OP|→/.test(linkPost.innerText) || !nodePostReply) {
+            return;
+        }
+
+        // контейнер, который имитирует древовидную структуру
+        const container = document.createElement('div')
+        container.style.cssText = `border-left:2px dashed;padding-left:2px;margin-left:21px;`
+
+        // определяем клик, что свернуть/развернуть поддерево
+        container.onclick = click
+
+        // посты с одиночными картинками отображались некорректно
+        const glue = document.createElement('div')
+        glue.style.cssText = `display: flex;margin-left:2px;`
+
+        glue.append(nodePostCurr)
+        container.append(glue)
+
+        // определяем вложенный ли пост или он в корне дерева
+        if (nodePostReply.parentNode.style.display === "flex") {
+            nodePostReply.parentNode.parentNode.insertBefore(container, nodePostReply.nextSibling)
+        } else {
+            nodePostReply.parentNode.insertBefore(container, nodePostReply.nextSibling)
+        }
+
+        if (newpost) {
+            nodePostCurr.style["border-left"] = "5px solid";
+            nodePostCurr.addEventListener(
+                "click",
+                () => {
+                    nodePostCurr.style["border-left"] = "2px dashed";
+                },
+                {once: true}
+            );
+        }
+    }
+
+    //перебираем и вызываем функцию
+    for (const key of post) {
+        postMove(key);
+    }
+
+    //наблюдаем за появлением новых постов
+    const fromThreads = document.querySelector(".thread");
+
+    const observer = new MutationObserver((mutationRecords) => {
+        for (const key of mutationRecords) {
+            if (key.addedNodes.length > 0) {
+                const post = key.addedNodes[0].querySelector(
+                    `.post__message > :nth-child(1)[data-num]`
+                );
+                if (post) {
+                    postMove(post, true);
+                }
+            }
+        }
+    });
+
+    observer.observe(fromThreads, {childList: true});
+    // console.timeEnd("tree script");
 })();
