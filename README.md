@@ -1,5 +1,5 @@
 # 2ch-tree-post-fixed
-a usercript makes threads for famous vk public tree-like
+a usercript makes threads for famous vk public tree-like  
 trees also fold on click
 
 1. установить **[tampermonkey](https://www.tampermonkey.net/)**
