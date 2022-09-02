@@ -17,6 +17,24 @@
     `.post__message > :nth-child(1)[data-num]`
   );
 
+  // тогл состояния скрытости поста
+  function togglePosts(node) {
+    let sibling = node.parentNode.firstChild
+    let hideBool = !node.querySelectorAll('.post')[0].classList.contains('post_type_hidden')
+    sibling.parentNode.querySelectorAll('.post').forEach(e => {
+      if (e !== sibling.firstChild) {
+        e.classList.toggle('post_type_hidden', hideBool);
+      }
+    })
+  }
+
+  // ловим клик именно по конкретному поддереву
+  function click(e) {
+    if (e.x - e.currentTarget.offsetLeft < 5) {
+      togglePosts(e.currentTarget)
+    }
+  }
+
   //функцию вызываем на все посты в треде
   //Перемащает пост и применяет стили для создания дерева
   function postMove(linkPost, newpost = false) {
@@ -32,6 +50,9 @@
     // контейнер, который имитирует древовидную структуру
     const container = document.createElement('div')
     container.style.cssText = `border-left:2px dashed;padding-left:2px;margin-left:21px;`
+
+    // определяем клик, что свернуть/развернуть поддерево
+    container.onclick = click
 
     // посты с одиночными картинками отображались некорректно
     const glue = document.createElement('div')
