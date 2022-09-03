@@ -111,7 +111,7 @@
         for (const key of mutationRecords) {
             if (key.addedNodes.length > 0) {
                 const post = key.addedNodes[0].querySelector(
-                    `.post__message > :nth-child(1)[data-num]`
+                    `.thread > .post_type_reply > .post__message > :nth-child(1)[data-num]`
                 );
                 if (post) {
                     postMove(post, true);
