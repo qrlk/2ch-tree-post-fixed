@@ -18,9 +18,16 @@
         `.post__message > :nth-child(1)[data-num]`
     );
 
+    function checkVisible(elm) {
+        var rect = elm.getBoundingClientRect();
+        var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+        return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+    }
+
     // тогл состояния скрытости поста
     function togglePosts(node) {
         let sibling = node.parentNode.firstChild
+        let first = node, last = node
         let hideBool = !node.querySelectorAll('.post')[0].classList.contains('post_type_hidden')
         if (node.parentNode.classList.contains("thread")) {
             sibling = node
@@ -28,10 +35,12 @@
             while (sibling && sibling.previousSibling && !sibling.previousSibling.classList.contains("post")) {
                 sibling = sibling.previousSibling
             }
+            first = sibling.previousSibling
             // обходим всё поддерево
             while (sibling && sibling.nextSibling && sibling.tagName === "DIV") {
                 sibling.querySelectorAll('.post').forEach(e => {
                     e.classList.toggle('post_type_hidden', hideBool)
+                    last = e
                 })
                 sibling = sibling.nextSibling
             }
@@ -39,8 +48,15 @@
             sibling.parentNode.querySelectorAll('.post').forEach(e => {
                 if (e !== sibling.firstChild) {
                     e.classList.toggle('post_type_hidden', hideBool);
+                    last = e
+                } else {
+                    first = e
                 }
             })
+        }
+        if (!checkVisible(last)) {
+            first.scrollIntoView()
+            console.log('прокручено к первому элементу, потому что последний элемент не был виден')
         }
     }
 
