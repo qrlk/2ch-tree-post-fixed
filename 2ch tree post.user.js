@@ -92,7 +92,7 @@
             nodePostCurr.addEventListener(
                 "click",
                 () => {
-                    nodePostCurr.style["border-left"] = "2px dashed";
+                    nodePostCurr.style["border-left"] = "2px dashed #373c3e";
                 },
                 {once: true}
             );
