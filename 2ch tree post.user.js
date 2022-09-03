@@ -104,11 +104,11 @@
         }
 
         if (newpost) {
-            nodePostCurr.style["border-left"] = "5px solid";
+            nodePostCurr.parentNode.parentNode.style["border-left"] = "2px solid";
             nodePostCurr.addEventListener(
                 "click",
                 () => {
-                    nodePostCurr.style["border-left"] = "2px dashed #373c3e";
+                    nodePostCurr.parentNode.parentNode.style["border-left"] = "2px dashed #373c3e";
                 },
                 {once: true}
             );
