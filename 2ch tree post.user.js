@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         2ch tree post fixed
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  делает треды древовидными
 // @author       You
 // @match        http://2ch.hk/*/res/*
