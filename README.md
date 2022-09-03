@@ -2,7 +2,7 @@
 a usercript makes threads for famous vk public tree-like  
 trees also fold on click
 
-юзерскрипт делает треды древовидными
+юзерскрипт делает треды древовидными  
 деревья также складываются по клику
 
 1. установить **[tampermonkey](https://www.tampermonkey.net/)**
