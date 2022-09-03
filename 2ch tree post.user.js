@@ -68,7 +68,7 @@
 
         // контейнер, который имитирует древовидную структуру
         const container = document.createElement('div')
-        container.style.cssText = `border-left:2px dashed;padding-left:2px;margin-left:21px;`
+        container.style.cssText = `border-left:2px dashed #373c3e;padding-left:2px;margin-left:21px;`
 
         // определяем клик, что свернуть/развернуть поддерево
         container.onclick = click
